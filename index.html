@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#064e3b">
+  <meta name="description" content="Explore CRISPR gene editing through an interactive capstone project: bacterial immunity, the Cas9 mechanism, real-world applications, and a quick quiz.">
+  <title>CRISPR Explorer — Capstone Overview</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = { theme: { extend: {
+      fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] },
+      colors: { brand: { emerald: '#10B981', lime: '#84CC16', teal: '#0D9488', amber: '#F59E0B', coral: '#F97316', forest: '#064E3B' } },
+      boxShadow: { vivid: '0 20px 40px -15px rgba(16, 185, 129, 0.25)', 'vivid-hover': '0 25px 50px -12px rgba(13, 148, 136, 0.35)', 'glow-coral': '0 0 25px rgba(249, 115, 22, 0.4)', 'glow-teal': '0 0 25px rgba(20, 184, 166, 0.4)', 'glow-amber': '0 0 25px rgba(245, 158, 11, 0.4)' }
+    } } };
+  </script>
+  <style>
+    body { background-color:#FEFDF8; background-image:radial-gradient(at 0% 0%,rgba(16,185,129,.14) 0,transparent 50%),radial-gradient(at 100% 0%,rgba(245,158,11,.16) 0,transparent 50%),radial-gradient(at 50% 100%,rgba(20,184,166,.14) 0,transparent 50%),radial-gradient(at 100% 100%,rgba(249,115,22,.12) 0,transparent 50%);background-attachment:fixed }
+    .glass-card { background:rgba(255,255,255,.88);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.9) }
+    .gradient-text { background:linear-gradient(135deg,#059669 0%,#0D9488 50%,#F59E0B 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent }
+    @keyframes float-slow { 0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-10px) rotate(3deg)} }
+    .animate-float { animation:float-slow 5s ease-in-out infinite }
+    @media (prefers-reduced-motion: reduce) { *,*::before,*::after { animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important } }
+  </style>
+</head>
+<body class="text-slate-800 font-sans antialiased min-h-screen flex flex-col selection:bg-emerald-500 selection:text-white">
+<header class="sticky top-0 z-50 glass-card border-b border-emerald-100 shadow-sm">
+  <div class="max-w-6xl mx-auto px-6 flex items-center justify-between py-3">
+    <div class="flex items-center space-x-3 shrink-0">
+      <div class="p-2.5 bg-gradient-to-tr from-emerald-600 via-teal-500 to-amber-400 rounded-2xl text-white shadow-md"><i data-lucide="dna" class="w-6 h-6"></i></div>
+      <div><span class="font-extrabold text-xl tracking-tight gradient-text">CRISPR Explorer</span><span class="text-xs font-semibold block text-emerald-700/80">Capstone Project (V. Vinaya)</span></div>
+    </div>
+    <nav aria-label="Main navigation" class="hidden md:flex space-x-1.5 bg-amber-50/70 p-1.5 rounded-2xl border border-emerald-100 shadow-inner">
+      <button id="nav-tab-1" onclick="switchTab(1)" class="desktop-tab px-4 py-2 rounded-xl text-xs font-bold">✦ 1. Overview &amp; Story</button>
+      <button id="nav-tab-2" onclick="switchTab(2)" class="desktop-tab px-4 py-2 rounded-xl text-xs font-bold">2. Lab Mechanism</button>
+      <button id="nav-tab-3" onclick="switchTab(3)" class="desktop-tab px-4 py-2 rounded-xl text-xs font-bold">3. Real Applications</button>
+    </nav>
+    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-800 border border-amber-300"><span class="w-2 h-2 mr-1.5 rounded-full bg-emerald-500 animate-ping"></span><span id="active-tab-badge">Tab 1 Active</span></span>
+  </div>
+  <nav aria-label="Mobile navigation" class="md:hidden flex border-t border-emerald-100 bg-white/95 px-4 py-2 overflow-x-auto space-x-2">
+    <button id="mobile-nav-tab-1" onclick="switchTab(1)" class="mobile-tab px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap">1. Overview</button>
+    <button id="mobile-nav-tab-2" onclick="switchTab(2)" class="mobile-tab px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap">2. Mechanism</button>
+    <button id="mobile-nav-tab-3" onclick="switchTab(3)" class="mobile-tab px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap">3. Applications</button>
+  </nav>
+</header>
+<main class="flex-grow">
+  <div id="view-tab-1">
+    <section class="relative py-12 lg:py-16 px-6 max-w-6xl mx-auto"><div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+      <div class="lg:col-span-7 space-y-5 text-center lg:text-left">
+        <div class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-white/95 border border-orange-200 text-orange-600 text-xs font-extrabold shadow-sm">✂️ The Molecular Scissors of Life</div>
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black text-slate-900 tracking-tight leading-tight">Editing DNA as easily as <br class="hidden sm:inline"><span class="gradient-text">Find &amp; Replace!</span></h1>
+        <p class="text-base sm:text-lg text-slate-600 font-medium max-w-2xl mx-auto lg:mx-0 leading-relaxed">Welcome to <strong>CRISPR Explorer</strong>. Think of DNA as nature's instruction book—CRISPR is a revolutionary tool that lets scientists search for a typo, snip it out, and paste in healthy code to cure diseases and build resilient crops.</p>
+        <div class="flex flex-wrap justify-center lg:justify-start gap-3 pt-2"><a href="#topics-grid" class="px-6 py-3 rounded-2xl bg-gradient-to-r from-emerald-600 via-teal-500 to-amber-500 text-white font-bold shadow-vivid hover:shadow-vivid-hover hover:scale-105 transition flex items-center gap-2">Explore What's Inside ↓</a><a href="#bacterial-story" onclick="startStoryFromHero()" class="px-6 py-3 rounded-2xl bg-white border border-emerald-200 text-emerald-700 font-bold hover:bg-emerald-50 transition shadow-sm">▶ Watch 1-Min Bacterial Story</a></div>
+      </div>
+      <div class="lg:col-span-5"><div class="max-w-md mx-auto glass-card rounded-3xl p-6 border-2 border-emerald-200/80 shadow-vivid animate-float">
+        <div class="flex items-center justify-between mb-4"><span class="text-xs font-extrabold uppercase tracking-wider text-emerald-700 bg-emerald-100 px-3 py-1 rounded-full">Live Genetic Blueprint</span><span class="text-xs font-bold text-amber-700 bg-amber-100 px-2.5 py-1 rounded-full">4 Base Letters</span></div>
+        <div class="space-y-2.5 bg-gradient-to-br from-emerald-950 via-teal-950 to-slate-900 p-4 rounded-2xl text-white">
+          <div class="flex items-center justify-between px-3 py-2 rounded-xl bg-white/10"><span class="w-8 h-8 rounded-lg bg-emerald-500 font-black flex items-center justify-center">A</span><div class="flex-1 mx-3 h-1 rounded-full bg-gradient-to-r from-emerald-400 to-teal-400"></div><span class="w-8 h-8 rounded-lg bg-teal-500 font-black flex items-center justify-center">T</span></div>
+          <div class="flex items-center justify-between px-3 py-2 rounded-xl bg-amber-500/20 border border-amber-400/50"><span class="w-8 h-8 rounded-lg bg-amber-400 text-slate-950 font-black flex items-center justify-center">C</span><div class="flex-1 mx-3 text-center text-[11px] font-extrabold text-amber-200">✂️ Target Edit Site</div><span class="w-8 h-8 rounded-lg bg-orange-500 font-black flex items-center justify-center">G</span></div>
+          <div class="flex items-center justify-between px-3 py-2 rounded-xl bg-white/10"><span class="w-8 h-8 rounded-lg bg-teal-500 font-black flex items-center justify-center">G</span><div class="flex-1 mx-3 h-1 rounded-full bg-gradient-to-r from-teal-400 to-amber-400"></div><span class="w-8 h-8 rounded-lg bg-amber-500 text-slate-950 font-black flex items-center justify-center">C</span></div>
+        </div><div class="mt-4 grid grid-cols-2 gap-2.5 text-center"><div class="p-2.5 rounded-2xl bg-emerald-50 border border-emerald-100"><div class="text-xs font-black text-emerald-800">Guide RNA</div><div class="text-[11px] text-slate-600">Finds matching DNA</div></div><div class="p-2.5 rounded-2xl bg-amber-50 border border-amber-100"><div class="text-xs font-black text-amber-800">Cas9 Enzyme</div><div class="text-[11px] text-slate-600">Makes a targeted cut</div></div></div>
+      </div></div>
+    </div></section>
+    <section id="topics-grid" class="py-8 px-6 max-w-6xl mx-auto"><div class="text-center max-w-2xl mx-auto mb-8"><span class="px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-extrabold uppercase tracking-wider">Capstone Roadmap</span><h2 class="text-2xl sm:text-3xl font-black text-slate-900 mt-2">What's in Store Across This Website</h2><p class="text-sm text-slate-600 mt-1">Three modules take you from curious beginner to confident CRISPR explorer.</p></div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
+        <article class="glass-card rounded-3xl p-6 border-2 border-emerald-300 shadow-vivid"><span class="text-2xl">🧭</span><p class="text-xs font-extrabold text-emerald-700 mt-3">MODULE 01</p><h3 class="text-lg font-extrabold mt-1">Overview &amp; Story</h3><p class="text-xs text-slate-600 mt-2 leading-relaxed">Plain-English analogies and an interactive look inside a bacterium defending itself from viruses.</p><div class="mt-5 pt-3 border-t border-emerald-100 text-xs font-bold text-emerald-700">You are here ✓</div></article>
+        <article onclick="switchTab(2)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();switchTab(2)}" role="button" tabindex="0" class="cursor-pointer glass-card rounded-3xl p-6 border border-teal-100 hover:border-teal-300 hover:shadow-vivid transition"><span class="text-2xl">✂️</span><p class="text-xs font-extrabold text-teal-700 mt-3">MODULE 02</p><h3 class="text-lg font-extrabold mt-1">Lab Mechanism</h3><p class="text-xs text-slate-600 mt-2 leading-relaxed">How scientists use guide RNA and Cas9 to target DNA and understand the cell's repair process.</p><div class="mt-5 pt-3 border-t border-slate-100 text-xs font-bold text-teal-700">Explore mechanism →</div></article>
+        <article onclick="switchTab(3)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();switchTab(3)}" role="button" tabindex="0" class="cursor-pointer glass-card rounded-3xl p-6 border border-amber-100 hover:border-amber-300 hover:shadow-vivid transition"><span class="text-2xl">💚</span><p class="text-xs font-extrabold text-amber-700 mt-3">MODULE 03</p><h3 class="text-lg font-extrabold mt-1">Real Applications</h3><p class="text-xs text-slate-600 mt-2 leading-relaxed">Explore gene therapy, agricultural research, and CRISPR-based diagnostics.</p><div class="mt-5 pt-3 border-t border-slate-100 text-xs font-bold text-amber-700">Explore applications →</div></article>
+      </div>
+    </section>
+    <section id="bacterial-story" class="py-10 px-6 max-w-6xl mx-auto"><div class="glass-card rounded-3xl p-6 sm:p-10 border-2 border-emerald-200 shadow-xl"><div class="max-w-4xl mx-auto">
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6"><div><span class="px-3 py-1 rounded-full bg-amber-100 text-amber-800 text-xs font-extrabold uppercase tracking-wider">Nature's Original Defense</span><h2 class="text-2xl sm:text-3xl font-black text-slate-900 mt-1.5">1-Minute Bacterial Immunity Story</h2><p class="text-xs sm:text-sm text-slate-600 mt-1">Explore how a bacterium can recognize viral DNA and build immune memory.</p></div><div class="flex items-center gap-2 bg-emerald-50 p-2 rounded-2xl border border-emerald-200"><button onclick="toggleStoryPlay()" class="px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-500 text-white text-xs font-extrabold"><span id="story-play-label">Play Story</span></button><button onclick="restartStory()" class="p-2 rounded-xl bg-white text-slate-700 border border-emerald-200" aria-label="Restart story">↺</button><span id="story-timer" class="px-2.5 py-1 rounded-lg bg-slate-900 text-amber-300 font-mono text-xs font-extrabold">0:00</span></div></div>
+      <div role="progressbar" aria-label="Story progress" aria-valuemin="0" aria-valuemax="4" aria-valuenow="0" onclick="scrubStory(event)" class="w-full h-2.5 bg-emerald-100 rounded-full overflow-hidden cursor-pointer mb-6 border border-emerald-200"><div id="story-progress-bar" class="h-full bg-gradient-to-r from-orange-500 via-teal-500 to-emerald-500 transition-all" style="width:0%"></div></div>
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 mb-6">
+        <button id="scene-tab-1" onclick="jumpToScene(1)" class="scene-tab p-3 rounded-2xl text-left border-2 text-xs font-extrabold">0:00–0:15<br>1. Virus arrives</button><button id="scene-tab-2" onclick="jumpToScene(2)" class="scene-tab p-3 rounded-2xl text-left border-2 text-xs font-extrabold">0:15–0:30<br>2. DNA recognized</button><button id="scene-tab-3" onclick="jumpToScene(3)" class="scene-tab p-3 rounded-2xl text-left border-2 text-xs font-extrabold">0:30–0:45<br>3. Viral DNA cut</button><button id="scene-tab-4" onclick="jumpToScene(4)" class="scene-tab p-3 rounded-2xl text-left border-2 text-xs font-extrabold">0:45–1:00<br>4. Memory stored</button>
+      </div>
+      <div class="bg-gradient-to-br from-emerald-950 via-teal-950 to-slate-900 rounded-3xl p-4 sm:p-6 text-white shadow-2xl border border-teal-800/70"><div class="flex flex-wrap items-center justify-between gap-2 mb-3"><span id="stage-badge" class="px-3 py-1 rounded-full text-xs font-extrabold bg-orange-500/25 text-orange-200 border border-orange-400/40">Scene 1: Viral invasion</span><span class="text-[11px] font-bold text-teal-200">Inside a bacterial cell</span></div>
+        <div class="relative w-full max-w-4xl mx-auto h-[310px] sm:h-[360px] overflow-hidden rounded-3xl bg-slate-950/75 border-2 border-emerald-500/40"><div class="absolute inset-3 rounded-2xl border border-dashed border-emerald-400/25"></div><span class="absolute top-4 right-5 text-[10px] font-extrabold uppercase text-emerald-300/60">Bacterial cell</span>
+          <div id="story-virus" class="absolute left-[18%] top-[23%] -translate-x-1/2 -translate-y-1/2 text-center px-3 py-2 rounded-2xl bg-orange-600 border-2 border-amber-300 shadow-glow-coral"><div class="text-xs font-black">🦠 Bacteriophage</div><div class="text-[9px] text-amber-100">Invading virus</div></div>
+          <div id="story-dna" class="absolute left-[24%] top-[48%] -translate-x-1/2 -translate-y-1/2 px-3 py-2 rounded-lg bg-orange-500 border border-amber-200 font-mono text-xs font-black">5′-G-T-A-C-G-3′</div>
+          <div id="story-cas" class="absolute left-[45%] top-[76%] -translate-x-1/2 -translate-y-1/2 px-4 py-3 rounded-3xl bg-gradient-to-r from-emerald-600 to-teal-600 border-2 border-emerald-300 shadow-glow-teal text-center transition-all duration-700"><div class="text-xs font-black">Cas9 Enzyme</div><div class="mt-1 px-2 py-0.5 rounded-lg bg-amber-300 text-slate-950 font-mono text-[10px] font-black">Guide RNA</div></div>
+          <div class="absolute left-[76%] top-[54%] -translate-x-1/2 -translate-y-1/2 w-[190px] rounded-2xl bg-slate-900 border-2 border-teal-400/60 p-3 text-center"><div class="text-[10px] font-black uppercase text-teal-300 mb-2">CRISPR memory</div><div id="genome-target-slot" class="inline-block px-2 py-1.5 rounded-lg bg-slate-950 border border-dashed border-amber-400 text-amber-300 font-mono text-xs font-extrabold">Empty spacer</div><div id="genome-status-note" class="text-[10px] text-emerald-200 mt-2">Waiting to archive a viral sequence</div></div>
+        </div>
+        <div class="mt-4 p-4 rounded-2xl bg-white/10 border border-emerald-300/30"><p id="story-narration" class="text-xs sm:text-sm font-semibold text-amber-100 leading-relaxed">A bacteriophage attaches to a bacterium and introduces viral genetic material.</p><span id="story-analogy-tag" class="inline-block mt-2 px-3 py-1 rounded-xl bg-amber-400/20 border border-amber-300/40 text-amber-200 text-xs font-extrabold">Analogy: an intruder arrives</span></div>
+      </div>
+    </div></div></section>
+  </div>
+  <div id="view-tab-2" class="hidden"><section class="py-12 px-6 max-w-6xl mx-auto"><div class="text-center max-w-2xl mx-auto mb-10"><span class="px-3 py-1 rounded-full bg-teal-100 text-teal-800 text-xs font-extrabold uppercase">Module 02</span><h2 class="text-3xl sm:text-4xl font-black text-slate-900 mt-2">How Scientists Use CRISPR</h2><p class="text-sm text-slate-600 mt-2">An educational overview of the main steps in CRISPR-Cas9 editing.</p></div>
+    <div class="glass-card rounded-3xl p-6 sm:p-10 border-2 border-teal-200 shadow-xl max-w-4xl mx-auto"><div class="flex items-center justify-between mb-6"><div><h3 class="text-xl font-black">Interactive Cas9 Mechanism</h3><p class="text-xs text-slate-600 mt-1">Select a step to learn more.</p></div><div class="flex gap-2"> <button onclick="mechStep(1)" id="m-btn-1" class="mech-btn">1</button><button onclick="mechStep(2)" id="m-btn-2" class="mech-btn">2</button><button onclick="mechStep(3)" id="m-btn-3" class="mech-btn">3</button><button onclick="mechStep(4)" id="m-btn-4" class="mech-btn">4</button></div></div>
+      <div class="bg-gradient-to-br from-emerald-950 via-teal-950 to-slate-900 rounded-2xl p-6 text-white min-h-[220px] flex flex-col justify-between"><div><div class="inline-block px-3 py-1 rounded-full bg-amber-400 text-slate-950 text-xs font-extrabold mb-3" id="mech-step-tag"></div><h4 id="mech-title" class="text-lg font-black text-teal-200"></h4><p id="mech-desc" class="text-xs sm:text-sm text-slate-200 mt-2 leading-relaxed"></p></div><div class="mt-6 pt-4 border-t border-teal-800/60 flex items-center justify-between"><span id="mech-count" class="text-xs text-teal-300 font-mono"></span><button onclick="nextMechStep()" class="px-4 py-2 rounded-xl bg-teal-500 hover:bg-teal-400 text-slate-950 text-xs font-black">Next step →</button></div></div>
+    </div><p class="max-w-4xl mx-auto mt-5 text-xs text-slate-500">This is a high-level educational explanation, not a laboratory protocol. CRISPR outcomes depend on the biological system and repair pathway.</p>
+  </section></div>
+  <div id="view-tab-3" class="hidden"><section class="py-12 px-6 max-w-6xl mx-auto"><div class="text-center max-w-2xl mx-auto mb-10"><span class="px-3 py-1 rounded-full bg-amber-100 text-amber-800 text-xs font-extrabold uppercase">Module 03</span><h2 class="text-3xl sm:text-4xl font-black text-slate-900 mt-2">Real-World Applications</h2><p class="text-sm text-slate-600 mt-2">A look at current and emerging uses of CRISPR technology.</p></div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto mb-12">
+      <article class="glass-card rounded-3xl p-6 border border-emerald-200 shadow-sm"><div class="text-2xl mb-4">💚</div><h3 class="font-extrabold text-base">Gene therapy</h3><p class="text-xs text-slate-600 mt-2 leading-relaxed">Casgevy (exagamglogene autotemcel) is an approved CRISPR-based treatment for sickle cell disease and transfusion-dependent beta-thalassemia in eligible patients. It edits a patient's blood stem cells outside the body.</p></article>
+      <article class="glass-card rounded-3xl p-6 border border-teal-200 shadow-sm"><div class="text-2xl mb-4">🌱</div><h3 class="font-extrabold text-base">Agricultural research</h3><p class="text-xs text-slate-600 mt-2 leading-relaxed">Researchers are investigating ways to improve crop traits such as disease resistance, yield, and tolerance to environmental stress. Outcomes and regulatory treatment vary.</p></article>
+      <article class="glass-card rounded-3xl p-6 border border-amber-200 shadow-sm"><div class="text-2xl mb-4">🔬</div><h3 class="font-extrabold text-base">Rapid diagnostics</h3><p class="text-xs text-slate-600 mt-2 leading-relaxed">CRISPR-based systems such as SHERLOCK are being developed and studied for detecting nucleic-acid targets, including those from pathogens.</p></article>
+    </div>
+    <div class="glass-card rounded-3xl p-6 sm:p-8 border-2 border-amber-200 shadow-lg max-w-3xl mx-auto"><div class="text-center mb-6"><span class="px-3 py-1 rounded-full bg-amber-100 text-amber-800 text-xs font-extrabold">Quick Knowledge Check</span><h3 class="text-xl font-black mt-2">Test Your CRISPR Basics</h3></div>
+      <div class="p-4 rounded-2xl bg-white border border-slate-200"><h4 class="text-sm font-extrabold mb-3">What are the two main components of the basic CRISPR-Cas9 system?</h4><div class="space-y-2 text-xs font-medium"><label class="flex items-center gap-2 p-2 rounded-xl bg-slate-50 hover:bg-emerald-50 cursor-pointer"><input type="radio" name="q1" value="wrong"><span>Antibiotics and white blood cells</span></label><label class="flex items-center gap-2 p-2 rounded-xl bg-slate-50 hover:bg-emerald-50 cursor-pointer"><input type="radio" name="q1" value="right"><span>Cas9 enzyme and guide RNA</span></label><label class="flex items-center gap-2 p-2 rounded-xl bg-slate-50 hover:bg-emerald-50 cursor-pointer"><input type="radio" name="q1" value="wrong"><span>Plasmids and ribosomes</span></label></div></div>
+      <div class="text-center pt-4"><button onclick="checkQuiz()" class="px-6 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-white font-bold text-xs shadow">Submit answer</button><p id="quiz-result" aria-live="polite" class="text-xs font-bold mt-3"></p></div>
+    </div>
+  </section></div>
+</main>
+<footer class="glass-card border-t border-emerald-100 py-6 text-center text-xs text-slate-600 font-medium mt-12"><p>CRISPR Explorer Capstone Project · Developed by V. Vinaya (Reg. No. 1920260078) · SIMATS Engineering</p></footer>
+<script>
+  lucide.createIcons();
+  const activeDesktop = 'px-4 py-2 rounded-xl text-xs font-bold bg-gradient-to-r from-emerald-600 via-teal-500 to-amber-500 text-white shadow-md transition';
+  const inactiveDesktop = 'px-4 py-2 rounded-xl text-xs font-bold text-slate-600 hover:text-emerald-700 hover:bg-emerald-50 transition';
+  function switchTab(n) {
+    for (let i=1;i<=3;i++) {
+      document.getElementById(`view-tab-${i}`).classList.toggle('hidden',i!==n);
+      document.getElementById(`nav-tab-${i}`).className = i===n ? activeDesktop : inactiveDesktop;
+      const mobile=document.getElementById(`mobile-nav-tab-${i}`);
+      mobile.className=`mobile-tab px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap ${i===n?'bg-emerald-600 text-white shadow-sm':'text-slate-600 bg-emerald-50'}`;
+      document.getElementById(`nav-tab-${i}`).setAttribute('aria-current',i===n?'page':'false');
+    }
+    document.getElementById('active-tab-badge').innerText=`Tab ${n} Active`;
+    if (n!==1) pauseStory();
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  let currentScene=1, elapsed=0, storyInterval=null;
+  const scenes=[
+    {badge:'Scene 1: Viral invasion',text:'A bacteriophage attaches to a bacterium and introduces viral genetic material.',tag:'Analogy: an intruder arrives',cas:'left-[45%] top-[76%]',slot:'Empty spacer',note:'Waiting to archive a viral sequence'},
+    {badge:'Scene 2: Target recognition',text:'A guide RNA helps the Cas9 complex recognize a matching sequence in the invading genetic material.',tag:'Analogy: recognizing a fingerprint',cas:'left-[31%] top-[48%]',slot:'Target recognized',note:'A matching sequence has been found'},
+    {badge:'Scene 3: DNA cleavage',text:'After target recognition and the required sequence context, Cas9 can cut the target DNA. Cells then repair the break.',tag:'Analogy: disabling the intruder',cas:'left-[31%] top-[48%]',slot:'Viral DNA cut',note:'The cell responds to the DNA break'},
+    {badge:'Scene 4: Immune memory',text:'In bacterial CRISPR immunity, fragments from invading genetic material can be incorporated into the CRISPR array, helping the cell recognize future invaders.',tag:'Analogy: saving a wanted poster',cas:'left-[45%] top-[76%]',slot:'Viral spacer saved',note:'A sequence is archived in CRISPR memory'}
+  ];
+  function renderScene(n){currentScene=n;const s=scenes[n-1];document.getElementById('stage-badge').innerText=s.badge;document.getElementById('story-narration').innerText=s.text;document.getElementById('story-analogy-tag').innerText=s.tag;document.getElementById('story-cas').className=`absolute -translate-x-1/2 -translate-y-1/2 px-4 py-3 rounded-3xl bg-gradient-to-r from-emerald-600 to-teal-600 border-2 border-emerald-300 shadow-glow-teal text-center transition-all duration-700 ${s.cas}`;document.getElementById('genome-target-slot').innerText=s.slot;document.getElementById('genome-status-note').innerText=s.note;document.getElementById('story-dna').classList.toggle('opacity-40',n>=3);document.getElementById('story-progress-bar').style.width=`${((n-1)/3)*100}%`;document.querySelector('[role=progressbar]').setAttribute('aria-valuenow',n-1);document.getElementById('story-timer').innerText=`0:${String((n-1)*15).padStart(2,'0')}`;for(let i=1;i<=4;i++)document.getElementById(`scene-tab-${i}`).className=`scene-tab p-3 rounded-2xl text-left border-2 text-xs font-extrabold transition ${i===n?'bg-orange-500 text-white border-orange-400 shadow-md':'bg-white/85 text-slate-700 border-emerald-100 hover:border-emerald-300'}`;}
+  function jumpToScene(n){pauseStory();elapsed=(n-1)*15;renderScene(n)}
+  function updateTimer(){elapsed++;if(elapsed>=60){elapsed=60;renderScene(4);pauseStory();return}const n=Math.min(4,Math.floor(elapsed/15)+1);if(n!==currentScene)renderScene(n);document.getElementById('story-timer').innerText=`${Math.floor(elapsed/60)}:${String(elapsed%60).padStart(2,'0')}`;document.getElementById('story-progress-bar').style.width=`${(elapsed/60)*100}%`;document.querySelector('[role=progressbar]').setAttribute('aria-valuenow',Math.floor(elapsed/15));}
+  function toggleStoryPlay(){if(storyInterval){pauseStory();return}if(elapsed>=60){elapsed=0;renderScene(1)}document.getElementById('story-play-label').innerText='Pause Story';storyInterval=setInterval(updateTimer,1000)}
+  function pauseStory(){if(storyInterval){clearInterval(storyInterval);storyInterval=null}const label=document.getElementById('story-play-label');if(label)label.innerText='Play Story'}
+  function restartStory(){pauseStory();elapsed=0;renderScene(1);document.getElementById('story-timer').innerText='0:00';document.getElementById('story-progress-bar').style.width='0%'}
+  function scrubStory(e){const r=e.currentTarget.getBoundingClientRect();const n=Math.min(4,Math.max(1,Math.floor(((e.clientX-r.left)/r.width)*4)+1));jumpToScene(n)}
+  function startStoryFromHero(){switchTab(1);document.getElementById('bacterial-story').scrollIntoView({behavior:'smooth'});setTimeout(toggleStoryPlay,600)}
+  const mechSteps={1:{tag:'Step 1: Guide RNA design',title:'Choosing a target sequence',desc:'Researchers design a guide RNA to direct the Cas9 complex toward a matching DNA sequence. Target choice and design require careful validation.'},2:{tag:'Step 2: Cas9 assembly',title:'Forming the targeting complex',desc:'The guide RNA associates with Cas9. Together they form a complex that can search DNA for a compatible target and the required PAM sequence.'},3:{tag:'Step 3: Target recognition',title:'Checking and cutting the target',desc:'Cas9 recognizes a PAM sequence, checks nearby DNA for a guide match, and may create a double-strand break at the target.'},4:{tag:'Step 4: DNA repair',title:'The cell repairs the break',desc:'The cell's repair pathways may introduce small changes or, in some contexts, use a supplied template. Outcomes can vary and require careful analysis.'}};
+  let currentMech=1;
+  function mechStep(n){currentMech=n;const d=mechSteps[n];document.getElementById('mech-step-tag').innerText=d.tag;document.getElementById('mech-title').innerText=d.title;document.getElementById('mech-desc').innerText=d.desc;document.getElementById('mech-count').innerText=`Mechanism step ${n} of 4`;for(let i=1;i<=4;i++)document.getElementById(`m-btn-${i}`).className=`mech-btn w-8 h-8 rounded-full font-bold text-xs flex items-center justify-center ${i===n?'bg-teal-600 text-white shadow':'bg-slate-200 text-slate-700'}`}
+  function nextMechStep(){mechStep(currentMech%4+1)}
+  function checkQuiz(){const selected=document.querySelector('input[name="q1"]:checked');const result=document.getElementById('quiz-result');if(!selected){result.innerText='Please select an option first.';result.className='text-xs font-bold mt-3 text-amber-600';return}const correct=selected.value==='right';result.innerText=correct?'🎉 Correct! The basic system uses Cas9 and a guide RNA.':'Not quite. The answer is Cas9 enzyme and guide RNA. Try again!';result.className=`text-xs font-bold mt-3 ${correct?'text-emerald-600':'text-orange-600'}`}
+  switchTab(1);mechStep(1);renderScene(1);
+</script>
+<style>.mech-btn{width:2rem;height:2rem;border-radius:9999px;font-weight:700;font-size:.75rem;display:flex;align-items:center;justify-content:center}</style>
+</body>
+</html>
